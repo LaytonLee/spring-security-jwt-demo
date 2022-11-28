@@ -1,0 +1,48 @@
+server:
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json,application/xml
+    min-response-size: 1024
+  port: 8081
+  tomcat:
+    accept-count: 1000
+    threads:
+      max: 400
+      min-spare: 20
+    max-http-form-post-size: 0
+  servlet:
+    session:
+      timeout: 30m
+spring:
+  profiles:
+    active: dev  # 使用 application-dev.yaml 配置文件
+  application:
+    name: demo-jwt
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    locale: zh_CN
+    # 解决json返回过程中long的精度丢失问题
+    generator:
+      write-numbers-as-strings: true
+      write-bigdecimal-as-plain: true
+    serialization:
+      write-dates-as-timestamps: false
+  servlet:
+    content-type: text/html
+    multipart:
+      max-file-size: 8MB
+      max-request-size: 8MB
+  mvc:
+    servlet:
+      load-on-startup: 1 #SpringBoot的接口第一次访问都很慢，通过日志可以发现，dispatcherServlet不是一开始就加载的，有访问才开始加载的，即懒加载。
+  main:
+    allow-bean-definition-overriding: true
+
+# mybatis配置
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 打印执行sql
+  mapper-locations: classpath*:/mapper/*.xml
+  type-aliases-package: com.layton.demojwt.entity
+

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.layton.demojwt.mapper.UserMapper">
+
+    <resultMap id="userMap" type="com.layton.demojwt.entity.User">
+        <id property="id" column="id" javaType="INT" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="findUserByUsername" parameterType="String" resultMap="userMap">
+        SELECT * FROM user WHERE username = #{username}
+    </select>
+
+    <!-- insert的返回值是根据主键形成的，且数据库中id字段是自增的，所以需要让它的id的字段和id属性值保持一致，这样就可以返回受影响的数据行数  -->
+    <insert id="addUser" parameterType="User" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into user (username, password) values (#{username}, #{password})
+    </insert>
+
+</mapper>
